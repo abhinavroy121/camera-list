@@ -1,0 +1,235 @@
+.camera-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+  background: white;
+}
+
+.camera-table thead th {
+  background: #fff;
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 0.5px solid hwb(0 100% 0%);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); */
+}
+
+.camera-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f3f4;
+  color: #495057;
+  vertical-align: middle;
+  text-align: left;
+}
+
+.camera-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.camera-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.camera-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.camera-id {
+  font-weight: 600;
+  color: #6c757d;
+  min-width: 60px;
+}
+
+.camera-name {
+  font-weight: 500;
+  color: #212529;
+  min-width: 180px;
+}
+
+
+
+.health-indicator {
+  /* display: inline-block; */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+
+.camera-location {
+  color: #6c757d;
+  min-width: 200px;
+}
+
+.camera-recorder {
+  color: #495057;
+  min-width: 120px;
+}
+
+.camera-tasks {
+  min-width: 100px;
+  text-align: center;
+}
+
+.tasks-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.tasks-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+.camera-status {
+  min-width: 100px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.status-badge.active {
+  background-color: #0292621A;
+  color: #029262;
+  border: 1px solid #c3e6cb;
+}
+
+.status-badge.inactive {
+  background-color: #F0F0F0;
+  color: #545454;
+  border: 1px solid #F0F0F0;
+}
+
+.status-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.status-badge:active {
+  transform: scale(0.98);
+}
+
+.camera-actions {
+  min-width: 100px;
+  align-items: center;
+}
+
+.camera-checkbox {
+  min-width: 40px;
+  text-align: center;
+}
+
+.camera-row-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.camera-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.camera-name-text {
+  font-weight: 500;
+  color: #212529;
+  margin-left: 4px;
+}
+
+.camera-email {
+  font-size: 12px;
+  color: #6c757d;
+  font-style: italic;
+  margin-left: 12px;
+}
+
+.health-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.camera-row {
+  transition: background-color 0.2s ease;
+}
+
+.camera-row:hover {
+  background-color: #f8f9fa;
+}
+
+.camera-actions img {
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+
+
+
+.table-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.empty-message {
+  color: #6c757d;
+  font-size: 16px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .camera-table th,
+  .camera-table td {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+  
+  .status-badge {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+  
+  .delete-btn {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+  
+  .camera-name,
+  .camera-location {
+    min-width: 100px;
+  }
+}
