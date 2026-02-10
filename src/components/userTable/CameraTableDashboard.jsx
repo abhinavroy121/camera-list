@@ -160,16 +160,16 @@ const CameraTableDashboard = () => {
                 <StatusFilter onStatusChange={handleStatusChange} />
                 </div>
               <CameraTable data={cameraListData} allData={allCameraData} onDataUpdate={handleDataUpdate} />
-              <Pagination 
-                currentPage={currentPage}
-                totalPages={Math.ceil(allCameraData.length / pageSize)}
-                onPageChange={handlePageChange}
-                pageSize={pageSize}
-                onPageSizeChange={handlePageSizeChange}
-                totalItems={allCameraData.length}
-                itemsPerPage={pageSize}
-              />
             </div>
+            <Pagination 
+              currentPage={currentPage}
+              totalPages={Math.ceil(allCameraData.length / pageSize)}
+              onPageChange={handlePageChange}
+              pageSize={pageSize}
+              onPageSizeChange={handlePageSizeChange}
+              totalItems={allCameraData.length}
+              itemsPerPage={pageSize}
+            />
         </div>
     )
 }

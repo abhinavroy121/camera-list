@@ -41,7 +41,7 @@ const CameraTable = ({ data, allData, onDataUpdate }) => {
       <thead>
         <tr>
           <th className="camera-checkbox">
-            <input type="checkbox" onChange={(e) => {
+            <input className="camera-row-checkbox" type="checkbox" onChange={(e) => {
               const allCheckboxes = document.querySelectorAll('.camera-row-checkbox');
               allCheckboxes.forEach(cb => cb.checked = e.target.checked);
             }} />
