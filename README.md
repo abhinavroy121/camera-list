@@ -2,6 +2,9 @@
 
 A modern camera management dashboard built with React that allows users to efficiently manage, filter, and monitor camera devices.
 
+<img width="1920" height="884" alt="cameraListDashboard" src="https://github.com/user-attachments/assets/b11f1365-1dc4-4f86-af27-fdc4160353ae" />
+
+
 ## Features
 
 ### 📋 Camera Management
