@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { getList } from '../../api/userApi';
 import CameraTable from '../CameraTable/CameraTable';
 import wobotLogo from '../../assets/wobotLogo.svg';
@@ -11,7 +11,6 @@ import Pagination from '../Pagination';
 const CameraTableDashboard = () => {
     const [originalData, setOriginalData] = useState([]);
     const [allCameraData, setAllCameraData] = useState([]);
-    const [cameraListData, setCameraListData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchInput, setSearchInput] = useState('');
     const [selectedLocation, setSelectedLocation] = useState('');
@@ -26,7 +25,6 @@ const CameraTableDashboard = () => {
             const data = response?.data?.cameras || [];
             setOriginalData(data);
             setAllCameraData(data);
-            setCameraListData(data);
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -49,15 +47,25 @@ const CameraTableDashboard = () => {
     // const endIndex = startIndex + pageSize;
     // const paginatedData = allCameraData.slice(startIndex, endIndex);
 
-    // Combined filtering and pagination logic
+    const [debouncedSearch, setDebouncedSearch] = useState('');
+
+    // Debounce search input
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchInput);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [searchInput]);
+
+    // Calculate filtered data with useMemo using debounced search
+    const filteredData = useMemo(() => {
         let filtered = allCameraData;
 
-        // Apply search filter
-        if (searchInput) {
+        // Apply search filter (debounced)
+        if (debouncedSearch) {
             filtered = filtered.filter((camera) =>
                 Object.values(camera).some((value) =>
-                    String(value).toLowerCase().includes(searchInput.toLowerCase())
+                    String(value).toLowerCase().includes(debouncedSearch.toLowerCase())
                 )
             );
         }
@@ -76,20 +84,21 @@ const CameraTableDashboard = () => {
         }
 
         // Apply pagination to filtered data
-        const paginatedFiltered = filtered.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize);
-        setCameraListData(paginatedFiltered);
-    }, [searchInput, selectedLocation, selectedStatus, allCameraData, currentPage, pageSize]);
+        return filtered.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize);
+    }, [debouncedSearch, selectedLocation, selectedStatus, allCameraData, currentPage, pageSize]);
 
-    // Validate page when data or filters change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
+     const handleSearch = useCallback((value) => {
+        setSearchInput(value);
+        setCurrentPage(1);
+    }, []);
+    // Calculate filtered count for pagination
+    const filteredCount = useMemo(() => {
         let filtered = allCameraData;
 
-        // Apply all active filters
-        if (searchInput) {
+        if (debouncedSearch) {
             filtered = filtered.filter((camera) =>
                 Object.values(camera).some((value) =>
-                    String(value).toLowerCase().includes(searchInput.toLowerCase())
+                    String(value).toLowerCase().includes(debouncedSearch.toLowerCase())
                 )
             );
         }
@@ -102,12 +111,16 @@ const CameraTableDashboard = () => {
             );
         }
 
-        // Check if current page is still valid
-        const totalFilteredPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+        return filtered.length;
+    }, [allCameraData, debouncedSearch, selectedLocation, selectedStatus]);
+
+    // Validate page when data or filters change
+    useEffect(() => {
+        const totalFilteredPages = Math.max(1, Math.ceil(filteredCount / pageSize));
         if (currentPage > totalFilteredPages) {
             setCurrentPage(totalFilteredPages);
         }
-    }, [allCameraData, searchInput, selectedLocation, selectedStatus, pageSize]);
+    }, [filteredCount, pageSize, currentPage]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -118,10 +131,7 @@ const CameraTableDashboard = () => {
         setAllCameraData(updatedData);
     };
 
-    const handleSearch = (value) => {
-        setSearchInput(value);
-        setCurrentPage(1); // Reset to first page when searching
-    };
+   
 
     const handleLocationChange = (location) => {
         setSelectedLocation(location);
@@ -159,15 +169,15 @@ const CameraTableDashboard = () => {
                      <LocationFilter onLocationChange={handleLocationChange} locations={uniqueLocations} />
                 <StatusFilter onStatusChange={handleStatusChange} />
                 </div>
-              <CameraTable data={cameraListData} allData={allCameraData} onDataUpdate={handleDataUpdate} />
+              <CameraTable data={filteredData} allData={allCameraData} onDataUpdate={handleDataUpdate} />
             </div>
             <Pagination 
               currentPage={currentPage}
-              totalPages={Math.ceil(allCameraData.length / pageSize)}
+              totalPages={Math.ceil(filteredCount / pageSize)}
               onPageChange={handlePageChange}
               pageSize={pageSize}
               onPageSizeChange={handlePageSizeChange}
-              totalItems={allCameraData.length}
+              totalItems={filteredCount}
               itemsPerPage={pageSize}
             />
         </div>
